@@ -32,5 +32,5 @@ public class Training {
     private Date trainingDate;
 
     @Column(nullable = false)
-    private BigDecimal trainingDuration;
+    private Integer trainingDuration;
 }

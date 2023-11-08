@@ -3,9 +3,11 @@ package com.haykz.GymCRM.service;
 import com.haykz.GymCRM.model.Trainee;
 import com.haykz.GymCRM.model.Trainer;
 import com.haykz.GymCRM.model.User;
-import com.haykz.GymCRM.storage.InMemoryStorage;
+import com.haykz.GymCRM.repository.TraineeRepository;
+import com.haykz.GymCRM.repository.TrainerRepository;
+import com.haykz.GymCRM.repository.UserRepository;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -13,23 +15,20 @@ import java.util.Random;
 
 @Service
 @Slf4j
+@RequiredArgsConstructor
 public class UserService {
-    private InMemoryStorage storage;
 
-    @Autowired
-    public void setInMemoryStorage(InMemoryStorage storage) {
-        this.storage = storage;
-    }
+    private final UserRepository userRepository;
+    private final TraineeRepository traineeRepository;
+    private final TrainerRepository trainerRepository;
 
     public User createProfile(String firstName, String lastName) {
-        final String username = generateUsername(firstName, lastName);
-        String password = generateRandomPassword(12);
-
         User user = new User();
         user.setFirstName(firstName);
         user.setLastName(lastName);
-        user.setUsername(username);
-        user.setPassword(password);
+        user.setUsername(generateUsername(firstName, lastName));
+        user.setPassword(generateRandomPassword(12));
+        user.setActive(true);
         log.info("User created: {}", user);
         return user;
     }
@@ -57,8 +56,8 @@ public class UserService {
     }
 
     private boolean checkForExistingUsers(String username) {
-        List<Trainer> trainers = (List<Trainer>) storage.getStorage().get("trainers");
-        List<Trainee> trainees = (List<Trainee>) storage.getStorage().get("trainees");
+        List<Trainer> trainers = trainerRepository.getAllTrainersByUsername(username);
+        List<Trainee> trainees = traineeRepository.getAllTraineesByUsername(username);
         return trainees.stream().anyMatch(trainee -> trainee.getUser().getUsername().equals(username)) ||
                 trainers.stream().anyMatch(trainer -> trainer.getUser().getUsername().equals(username));
     }

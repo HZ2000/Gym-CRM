@@ -3,7 +3,9 @@ package com.haykz.GymCRM.model;
 import jakarta.persistence.*;
 import lombok.Data;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Data
@@ -23,4 +25,7 @@ public class Trainer {
     @OneToMany
     @JoinColumn(name = "trainer_id")
     private List<Training> training;
+
+    @ManyToMany(mappedBy = "trainers")
+    private Set<Trainee> trainees = new HashSet<>();
 }

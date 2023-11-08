@@ -9,7 +9,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.math.BigDecimal;
 import java.util.Date;
 
 @Service
@@ -29,29 +28,29 @@ public class GymCRMFacade {
         this.userService = userService;
     }
 
-    public Trainer createTrainer(String firstName, String lastName) {
-        User user = userService.createProfile(firstName, lastName);
-        Trainer trainer = new Trainer();
-        trainer.setSpecialization(new TrainingType());
-        trainer.setUser(user);
-        return trainerService.createTrainer(trainer);
-    }
-
-    public Trainee createTrainee(String firstName, String lastName){
-        User user = userService.createProfile(firstName, lastName);
-        Trainee trainee = new Trainee();
-        trainee.setAddress("Random address");
-        trainee.setDateOfBirth(new Date());
-        trainee.setUser(user);
-        return traineeService.createTrainee(trainee);
-    }
-
-    public Training createTraining(){
-        Training training = new Training();
-        training.setTrainee(traineeService.getTraineeById(1L));
-        training.setTrainer(trainerService.getTrainerById(1L));
-        training.setTrainingType(new TrainingType());
-        training.setTrainingDuration(new BigDecimal(2));
-        return trainingService.createTraining(training);
-    }
+//    public Trainer createTrainer(String firstName, String lastName) {
+//        User user = userService.createProfile(firstName, lastName);
+//        Trainer trainer = new Trainer();
+//        trainer.setSpecialization(new TrainingType());
+//        trainer.setUser(user);
+//        return trainerService.createTrainer(trainer);
+//    }
+//
+//    public Trainee createTrainee(String firstName, String lastName){
+//        User user = userService.createProfile(firstName, lastName);
+//        Trainee trainee = new Trainee();
+//        trainee.setAddress("Random address");
+//        trainee.setDateOfBirth(new Date());
+//        trainee.setUser(user);
+//        return traineeService.createTrainee(trainee);
+//    }
+//
+//    public Training createTraining(){
+//        Training training = new Training();
+//        training.setTrainee(traineeService.getTraineeById(1L));
+//        training.setTrainer(trainerService.getTrainerById(1L));
+//        training.setTrainingType(new TrainingType());
+//        training.setTrainingDuration(2);
+//        return trainingService.createTraining(training);
+//    }
 }
